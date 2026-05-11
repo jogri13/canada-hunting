@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HuntGround</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">HG</span>
+          <div>
+            <strong>HuntGround</strong>
+            <span>Canada and US hunt planning</span>
+          </div>
+        </div>
+
+        <nav class="mode-tabs" aria-label="Primary view">
+          <button class="tab active" data-view="today" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v3M17 3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/></svg>
+            Today
+          </button>
+          <button class="tab" data-view="plan" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 4 5 3 5-3 4 2v14l-4-2-5 3-5-3-4 2V6l4-2Zm0 0v14m5-11v14m5-17v14"/></svg>
+            Plan
+          </button>
+          <button class="tab" data-view="offer" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            Offer
+          </button>
+          <button class="tab" data-view="admin" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h16M4 19h16"/><path d="M8 5v14M16 5v14"/></svg>
+            Admin
+          </button>
+        </nav>
+
+        <div class="top-actions">
+          <div class="auth-actions">
+            <button class="ghost-button" data-auth-view="login" type="button">Log in</button>
+            <button class="secondary-button nav-signup" data-auth-view="signup" type="button">Sign up</button>
+          </div>
+          <span class="session-pill" id="sessionPill" hidden></span>
+          <button class="icon-button" id="openOffer" type="button" aria-label="Create offer">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <main class="workspace" id="marketplaceView">
+        <section class="journey-panel" aria-label="Choose your journey">
+          <button class="journey-card active" data-journey="find" type="button">
+            <span class="journey-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="m21 21-4.4-4.4M10.8 18a7.2 7.2 0 1 1 0-14.4 7.2 7.2 0 0 1 0 14.4Z"/></svg>
+            </span>
+            <span>
+              <strong>Looking for a hunting experience</strong>
+              <small>Find land, partners, gear, spots, and guided sessions.</small>
+            </span>
+          </button>
+          <button class="journey-card" data-journey="offer" type="button">
+            <span class="journey-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            </span>
+            <span>
+              <strong>Offer a hunting experience</strong>
+              <small>List land access, a spot, equipment, or a hosted session.</small>
+            </span>
+          </button>
+        </section>
+
+        <section class="filter-panel" aria-label="Hunt search filters">
+          <div class="search-panel-head">
+            <div>
+              <p class="eyebrow">Search</p>
+              <h1 id="viewTitle">Find a hunt for today</h1>
+            </div>
+            <button class="text-button" id="resetFilters" type="button">Reset filters</button>
+          </div>
+
+          <section class="panel-section search-keyword-section">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.4-4.4M10.8 18a7.2 7.2 0 1 1 0-14.4 7.2 7.2 0 0 1 0 14.4Z"/></svg>
+              <input id="keywordSearch" type="search" placeholder="County, guide, gear, species" />
+            </div>
+          </section>
+
+          <section class="panel-section">
+            <div class="section-title"><span>Intent</span></div>
+            <div class="segmented" role="group" aria-label="Search mode">
+              <button class="segment active" data-search-mode="today" type="button">Hunt today</button>
+              <button class="segment" data-search-mode="planned" type="button">Plan hunt</button>
+            </div>
+          </section>
+
+          <section class="panel-section">
+            <label class="field">
+              <span>Offer type</span>
+              <select id="offerTypeFilter">
+                <option value="all">All types</option>
+                <option value="partners">Partners</option>
+                <option value="land">Land</option>
+                <option value="gear">Gear</option>
+                <option value="weapon">Weapon access</option>
+              </select>
+            </label>
+          </section>
+
+          <section class="panel-section">
+            <label class="field">
+              <span>Species</span>
+              <select id="speciesFilter">
+                <option value="all">All species</option>
+                <option value="deer">Whitetail deer</option>
+                <option value="moose">Moose</option>
+                <option value="canada-goose">Canada goose</option>
+                <option value="snow-goose">Snow goose</option>
+                <option value="duck">Duck</option>
+                <option value="turkey">Wild turkey</option>
+              </select>
+            </label>
+          </section>
+
+          <section class="panel-section">
+            <label class="field">
+              <span>Need</span>
+              <select id="needFilter">
+                <option value="all">All needs</option>
+                <option value="land">Land / spot</option>
+                <option value="partners">Partners</option>
+                <option value="gear">Equipment</option>
+                <option value="weapon">Weapon access</option>
+                <option value="session">Hunting session</option>
+              </select>
+            </label>
+          </section>
+
+          <section class="panel-section search-fields">
+            <label class="field">
+              <span>Area</span>
+              <select id="jurisdiction">
+                <option value="all">Canada + US</option>
+                <option value="Canada">Canada</option>
+                <option value="United States">United States</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Province / state</span>
+              <select id="regionFilter"></select>
+            </label>
+            <label class="field">
+              <span>Target date</span>
+              <input type="date" id="targetDate" />
+            </label>
+          </section>
+
+          <section class="panel-section compliance">
+            <div class="compliance-head">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 5 3 8 7 10 4-2 7-5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-5"/></svg>
+              <span>Compliance</span>
+            </div>
+            <p>Seasons, tags, firearm transport, outfitter rules, and migratory bird regulations vary by place and date.</p>
+          </section>
+        </section>
+
+        <section class="results-panel" aria-label="Hunting sessions and offers">
+          <div class="hero-utility">
+            <div>
+              <p class="eyebrow">Live marketplace</p>
+              <h2 id="resultTitle">Matching opportunities</h2>
+            </div>
+            <div class="view-tabs" role="group" aria-label="Results view">
+              <button class="view-tab active" data-result-view="map" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 4 5 3 5-3 4 2v14l-4-2-5 3-5-3-4 2V6l4-2Zm0 0v14m5-11v14m5-17v14"/></svg>
+                Map view
+              </button>
+              <button class="view-tab" data-result-view="list" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+                List view
+              </button>
+            </div>
+          </div>
+
+          <div class="map-board" id="mapBoard" aria-label="Offer map preview">
+            <div class="map-grid" aria-hidden="true"></div>
+            <div class="map-route"></div>
+            <div class="map-pin pin-a" data-pin="1"></div>
+            <div class="map-pin pin-b" data-pin="2"></div>
+            <div class="map-pin pin-c" data-pin="3"></div>
+            <div class="map-stat">
+              <strong id="resultCount">0</strong>
+              <span>matching opportunities</span>
+            </div>
+          </div>
+
+          <div class="result-toolbar">
+            <p class="result-summary" id="resultSummary">2 matching opportunities</p>
+            <label class="field compact sort-field">
+              <span>Sort</span>
+              <select id="sortOffers">
+                <option value="soonest">Soonest</option>
+                <option value="price">Lowest cost</option>
+                <option value="distance">Nearest</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="cards-grid" id="offerCards"></div>
+        </section>
+
+        <aside class="side-panel">
+          <section class="plan-card">
+            <div class="section-title"><span>Trip board</span></div>
+            <div id="selectedTrip" class="selected-trip empty-state">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+              <p>Select a listing to build a hunt checklist.</p>
+            </div>
+            <div class="checklist" id="checklist"></div>
+          </section>
+
+          <section class="offer-card">
+            <div class="section-title"><span>Create offer</span></div>
+            <form id="offerForm" class="offer-form">
+              <label class="field">
+                <span>Host</span>
+                <select id="hostType">
+                  <option>Hunter</option>
+                  <option>Landlord</option>
+                  <option>Outfitter</option>
+                  <option>Club</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Offer type</span>
+                <select id="offerType">
+                  <option>Hunting session</option>
+                  <option>Land access</option>
+                  <option>Spot share</option>
+                  <option>Equipment share</option>
+                  <option>Licensed weapon access</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Species</span>
+                <select id="offerSpecies">
+                  <option>Whitetail deer</option>
+                  <option>Moose</option>
+                  <option>Canada goose</option>
+                  <option>Snow goose</option>
+                  <option>Duck</option>
+                  <option>Wild turkey</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Location</span>
+                <input id="offerLocation" type="text" placeholder="Example: Leeds County, ON" />
+              </label>
+              <button class="primary-button" type="submit">Add offer</button>
+            </form>
+          </section>
+        </aside>
+      </main>
+
+      <section class="auth-page hidden" id="loginView" aria-label="Login page">
+        <div class="auth-hero">
+          <p class="eyebrow">Member access</p>
+          <h1>Welcome back to HuntGround.</h1>
+          <p>Manage saved hunts, partner requests, land permissions, and your upcoming checklist from one secure workspace.</p>
+        </div>
+        <form class="auth-card" id="loginForm">
+          <div class="auth-card-head">
+            <span class="brand-mark" aria-hidden="true">HG</span>
+            <div>
+              <h2>Log in</h2>
+              <p>Use the demo fields to enter the app.</p>
+            </div>
+          </div>
+          <label class="field">
+            <span>Email</span>
+            <input id="loginEmail" type="text" inputmode="email" autocomplete="email" placeholder="hunter@example.com" required />
+          </label>
+          <label class="field">
+            <span>Password</span>
+            <input type="password" autocomplete="current-password" placeholder="********" required />
+          </label>
+          <button class="primary-button" type="submit">Log in</button>
+          <button class="text-button auth-switch" data-auth-view="signup" type="button">Create a new account</button>
+        </form>
+      </section>
+
+      <section class="auth-page hidden" id="signupView" aria-label="Signup page">
+        <div class="auth-hero">
+          <p class="eyebrow">Start hunting smarter</p>
+          <h1>Build your profile before the season moves.</h1>
+          <p>Choose your species, region, and role so HuntGround can match you with partners, land, spots, and equipment.</p>
+        </div>
+        <form class="auth-card" id="signupForm">
+          <div class="auth-card-head">
+            <span class="brand-mark" aria-hidden="true">HG</span>
+            <div>
+              <h2>Create account</h2>
+              <p>For new hunters, hosts, landlords, and outfitters.</p>
+            </div>
+          </div>
+          <label class="field">
+            <span>Full name</span>
+            <input id="signupName" type="text" autocomplete="name" placeholder="Alex Hunter" required />
+          </label>
+          <label class="field">
+            <span>Email</span>
+            <input type="text" inputmode="email" autocomplete="email" placeholder="alex@example.com" required />
+          </label>
+          <label class="field">
+            <span>Primary role</span>
+            <select>
+              <option>New hunter</option>
+              <option>Hunter offering a session</option>
+              <option>Landlord offering land</option>
+              <option>Outfitter or club admin</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Password</span>
+            <input type="password" autocomplete="new-password" placeholder="********" required />
+          </label>
+          <button class="primary-button" type="submit">Create account</button>
+          <button class="text-button auth-switch" data-auth-view="login" type="button">I already have an account</button>
+        </form>
+      </section>
+
+      <main class="admin-shell hidden" id="adminView" aria-label="Admin panel">
+        <section class="admin-hero">
+          <div>
+            <p class="eyebrow">Operations</p>
+            <h1>Admin panel</h1>
+            <p>Review listings, monitor compliance risk, and keep new hunters matched with safe, verified opportunities.</p>
+          </div>
+          <button class="primary-button" data-auth-view="login" type="button">Admin login</button>
+        </section>
+
+        <section class="admin-stats" id="adminStats"></section>
+
+        <section class="admin-grid">
+          <div class="admin-card">
+            <div class="section-title"><span>Listing moderation</span></div>
+            <div class="admin-table" id="adminListings"></div>
+          </div>
+          <div class="admin-card">
+            <div class="section-title"><span>User queue</span></div>
+            <div class="user-list" id="adminUsers"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
